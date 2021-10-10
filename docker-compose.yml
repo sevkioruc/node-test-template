@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=test
+    ports:
+      - 3307:3306
+    volumes:
+      - /opt/mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "mysql"]
+      timeout: 10s
+      retries: 5
+  app:
+    image: "node:latest"
+    user: "node"
+    working_dir: /home/node/app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV:
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 3000:3000
+    links:
+      - mysql
+    command: "npm run test"

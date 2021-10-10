@@ -11,7 +11,7 @@
 		"username": "root",
 		"password": "password",
 		"database": "test",
-		"host": "127.0.0.1",
+		"host": "mysql",
 		"dialect": "mysql",
 		"port": "3000"
 	},
